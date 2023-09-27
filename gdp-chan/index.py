@@ -1,8 +1,9 @@
 import requests
 import os
-import telebot
-import time, atexit
 from flask import Flask
+import telebot
+
+bot = telebot.TeleBot(os.environ.get('BOT_TOKEN'))
 
 anime_api_base_url = 'https://api.jikan.moe/v4'
 
@@ -12,8 +13,14 @@ def request_handler(base_uri, request_route):
 
 app = Flask(__name__)
 
-scheduler_chats = []
+@app.route("/")
+def ping():
+  target = os.environ.get('TARGET', 'World')
+  return 'Hello {}!\n'.format(target)
 
 @app.route("/get_anime")
 def get_anime():
-  return request_handler(anime_api_base_url, 'random/anime')
+  return request_handler(anime_api_base_url, '/random/anime')
+
+if __name__ == "__main__":
+    app.run(debug=True,host='localhost',port=int(os.environ.get('PORT', 8080)))
