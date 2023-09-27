@@ -1,9 +1,6 @@
 import requests
 import os
 from flask import Flask
-import telebot
-
-bot = telebot.TeleBot(os.environ.get('BOT_TOKEN'))
 
 anime_api_base_url = 'https://api.jikan.moe/v4'
 
