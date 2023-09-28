@@ -9,8 +9,6 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 bot.set_webhook(url=os.environ.get('SERVER_URL') + "/webhook_receiver")
 
-webhook_log = []
-
 def request_handler(base_uri, request_route):
   request = requests.get(base_uri + request_route).json();
   return request['data'];
@@ -31,7 +29,6 @@ def webhook_treater():
       command = message["text"]
 
       if command == '/gdp':
-        webhook_log.append(json_request)
         send_message(chat_id=chat_id, text='Eu sou a GDP-chan! :D')  
 
         return 'Message sent!'
@@ -42,14 +39,7 @@ def webhook_treater():
     except:
       print(json_request)
       return 'Could not treat message!'
-  return 'Unsuported message'
-
-
-@app.route("/webhook_logger")
-def webhook_logger():
-  return webhook_log
-
-   
+  return 'Unsuported message'   
 
 if __name__ == "__main__":
     app.run(debug=True,host='localhost',port=int(os.environ.get('PORT', 8080)))
